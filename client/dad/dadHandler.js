@@ -1,8 +1,8 @@
 'use strict';
 
 // const eventPool = require('../eventPool');
-const {io} = require('socket.io-client');
-const socket = io.connect ('http://localhost:3003/caps');
+// const {io} = require('socket.io-client');
+// const socket = io.connect ('http://localhost:3003/burden');
 
 let Chance = require('chance');
 let chance = new Chance();
@@ -11,7 +11,7 @@ const { rooms, tasks } = require('./chores.js');
 
 const taskGenerate = (socket, payload = null) => {
   if(!payload) {
-    const payload = {
+    payload = {
       creator: "Dad",
       taskId: chance.guid(),
       task: tasks[chance.d10()],
@@ -20,6 +20,7 @@ const taskGenerate = (socket, payload = null) => {
   };
 
   console.log(`DAD: Someone needs to ${payload.task} the ${payload.room} now!`);
+  // console.log(`DAD: Someone needs to cleanup now!!!`);
 
   socket.emit('join', payload.taskId);
   socket.emit('task-ready', payload);

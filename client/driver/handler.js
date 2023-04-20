@@ -2,7 +2,7 @@
 
 // const eventPool = require('../eventPool');
 const {io} = require('socket.io-client');
-const socket = io.connect('http://localhost:3003/caps');
+const socket = io.connect('http://localhost:3003/burden');
 
 module.exports = (payload) => {
   console.log(`SON: Agreed to ${payload.task} the ${payload.room}!`);
