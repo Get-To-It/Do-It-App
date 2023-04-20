@@ -9,7 +9,7 @@ Do-It App is a simple and intuitive TODO list application that helps parents ass
 - [Installation](#installation)
 - [Usage](#usage)
 - [Tests](#tests)
-- [Contributing](#contributing)
+- [Contributors](#contributors)
 - [License](#license)
 
 ## Features
@@ -33,3 +33,23 @@ npm install
 
 ![UML](https://ryanbagan473965.invisionapp.com/freehand/-JsYWQMMfW?dsid_h=453d83f8474c0e742fb196b674417abb752a69bfc23845cbfa980c76b69ee9d2&uid_h=8763c6b09f43b58516c3116e2c7eef7892fc1b56a5800102d0af6ab36eb6446c)
 
+### Usage
+
+Open your browser and navigate to http://localhost:3000.
+Select a room (physical area of the house) from the dropdown menu.
+Enter a new task and click the "Add" button to assign it to the selected room.
+The task list will be updated in real-time for all clients connected to the same room.
+
+#### Tests
+
+TODO: Add instructions on how to run tests for the project, if applicable.
+
+#### Contributors
+
+- Ryan Bagan
+- Nathan Brown
+- Kyle Freemantle
+
+##### License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
