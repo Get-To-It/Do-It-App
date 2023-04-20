@@ -2,14 +2,14 @@
 
 //const eventPool = require('../eventPool');
 const {io} = require('socket.io-client');
-const handler = require('./handler');
+const sonHandler = require('./sonHandler');
 const socket = io.connect('http://localhost:3003/burden');
 
 socket.emit('getAll', {queueId: 'SON'});
 
 socket.on('task-ready', (payload) => {
   setTimeout(() => {
-    handler(payload);
+    sonHandler(payload);
   }, 1000);
 });
 
