@@ -5,9 +5,9 @@ const {io} = require('socket.io-client');
 const handler = require('./handler');
 const socket = io.connect('http://localhost:3003/caps');
 
-socket.emit('getAll', {queueId: 'DRIVER'});
+socket.emit('getAll', {queueId: 'SON'});
 
-socket.on('pickup', (payload) => {
+socket.on('task-ready', (payload) => {
   setTimeout(() => {
     handler(payload);
   }, 1000);

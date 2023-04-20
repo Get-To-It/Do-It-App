@@ -7,27 +7,36 @@ const socket = io.connect ('http://localhost:3003/caps');
 let Chance = require('chance');
 let chance = new Chance();
 
-const orderGenerate = (socket, payload = null) => {
+const { rooms, tasks } = require('./chores.js');
+
+const taskGenerate = (socket, payload = null) => {
   if(!payload) {
     const payload = {
-      deliveryCompany: deliveryCompany,
-      orderId: chance.guid(),
-      customer: chance.name(),
-      address: chance.address(),
+      creator: "Dad",
+      taskId: chance.guid(),
+      task: tasks[chance.d10()],
+      room: rooms[chance.d10()],
     };
   };
 
-  console.log('VENDOR: Thank you for picking up my order');
+  console.log(`DAD: Someone needs to ${payload.task} the ${payload.room} now!`);
 
-  socket.emit('join', payload.deliveryCompany);
-  socket.emit('pickup', payload);
+  socket.emit('join', payload.taskId);
+  socket.emit('task-ready', payload);
 };
 
-const orderDeliver = payload => {
-  console.log('VENDOR: Thank you for delivering ', payload.orderId);
+const taskComplete = payload => {
+  console.log(`DAD: Thank you for completing ${payload.task} the ${payload.room}!`);
 
   process.exit();
 };
+
+
+module.exports = {
+  taskGenerate,
+  taskComplete
+};
+
 
 // module.exports = (deliveryCompany) => {
 

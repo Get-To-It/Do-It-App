@@ -5,16 +5,16 @@ const {io} = require('socket.io-client');
 const socket = io.connect('http://localhost:3003/caps');
 
 module.exports = (payload) => {
-  console.log('DRIVER: Picked up order', payload.orderId);
-  socket.emit('pickup', payload);
+  console.log(`SON: Agreed to ${payload.task} the ${payload.room}!`);
+  // socket.emit('task-ready', payload);
 
   setTimeout(() => {
-    console.log('DRIVER: In transit to destination', payload.orderId);
-    socket.emit('in-transit', payload);
+    console.log(`SON: Working on ${payload.task} the ${payload.room}!`);
+    socket.emit('in-progress', payload);
   }, 1000);
 
   setTimeout(() => {
-    console.log(`DRIVER: delivered, ${payload.orderId}`);
-    socket.emit('delivered', payload.orderId);
+    console.log(`SON: Completed ${payload.task} the ${payload.room}`);
+    socket.emit('completed', payload);
   }, 1000);
 };
