@@ -1,7 +1,7 @@
 'use strict';
 
 const eventPool = require('../../eventPool');
-const handler = require('./handler');
+const sonHandler = require('./sonHandler');
 jest.mock('../../eventPool', () => {
   return {
     emit: jest.fn(),
@@ -16,14 +16,14 @@ describe('pick-up event', () => {
       event: 'pickup',
       time: new Date(),
       payload: {
-        store: '1-6969-Arkham-Flowers',
-        orderId: '147258369',
-        customer: 'Bruce Wayne',
-        address: 'Gotham City',
+        creator: 'Dad',
+        taskId: '147258369',
+        task: 'Vacuum',
+        room: 'Living Room',
       },
     };
 
-    handler(payload);
-    expect(eventPool.emit).toString('in-transit', payload);
+    sonHandler(payload);
+    expect(eventPool.emit).toString('in-progress', payload);
   });
 });

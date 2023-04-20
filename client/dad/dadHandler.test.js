@@ -2,7 +2,7 @@
 
 // const eventPool = require('../eventPool');
 const socket = require('../../socket');
-const handler = require('./handler');
+const handler = require('./dadHandler');
 //const orderDeliver = require('./handler');
 const { taskGenerate, taskComplete } = require('../dadHandler.js');
 
@@ -18,12 +18,13 @@ console.log = jest.fn();
 describe('Dad Handler', () => {
   test('event should emit', () => {
     const payload = {
-      deliveryCompany: 'Arkham Delivery',
-      orderId: '147258369',
-      customer: 'Bruce Wayne',
-      address: 'Gotham City',
+      creator: 'Dad',
+      taskId: '147258369',
+      task: 'Vacuum',
+      room: 'Living room',
     };
 
+    // refactor this to what?
     orderDeliver(payload);
     expect(socket.emit).toString('in-progress', payload);
   });
