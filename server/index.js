@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 const { Server } = require('socket.io');
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3003;
 const Queue = require('./lib/queue');
 const eventQueue = new Queue();
 // const Chance = require('chance');
@@ -28,53 +28,54 @@ caps.on('connection', socket => {
     socket.join(room);
   });
 
-  socket.on('pickup', (payload) => {
+  socket.on('task-ready', (payload) => {
 
-    let currentQueue = eventQueue.read('DRIVER');
+    let currentQueue = eventQueue.read('SON');
     if (!currentQueue) {
-      let keyOfQueue = eventQueue.store('DRIVER', new Queue());
+      let keyOfQueue = eventQueue.store('SON', new Queue());
       currentQueue = eventQueue.read(keyOfQueue);
     }
 
-    currentQueue.store(payload.orderId, payload);
+    currentQueue.store(payload.taskId, payload);
     //console.log('pickup event', payload);
-    caps.emit('pickup', payload);
+    caps.emit('task-ready', payload);
   });
 
-  socket.on('in-transit', (payload) => {
+  socket.on('in-progress', (payload) => {
     //console.log('in-transit event', payload);
-    caps.emit('in-transit', payload);
+    caps.emit('in-progress', payload);
   });
 
-  socket.on('delivered', (payload) => {
-    let currentQueue = eventQueue.read(payload.store);
+  socket.on('completed', (payload) => {
+    let currentQueue = eventQueue.read(payload.creator);
     if (!currentQueue) {
-      let keyOfQueue = eventQueue.store(payload.store, new Queue());
+      let keyOfQueue = eventQueue.store(payload.creator, new Queue());
       currentQueue = eventQueue.read(keyOfQueue);
     }
 
-    currentQueue.store(payload.orderId, payload);
+    currentQueue.store(payload.taskId, payload);
     //console.log('delivered event', payload);
-    caps.emit('delivered', payload);
+    caps.emit('completed', payload);
   });
 
-  socket.on('received', (payload) => {
-    let id = payload.queueId ? payload.queueId : payload.store;
+  socket.on('accepted', (payload) => {
+    console.log('accepted');
+    let id = payload.queueId ? payload.queueId : payload.creator;
     let currentQueue = eventQueue.read(id);
     if (!currentQueue) {
-      throw new Error('Cannot find queue for store: ' + payload.store);
+      throw new Error('Cannot find queue for store: ' + payload.creator);
     }
 
-    let message = currentQueue.remove(payload.orderId);
+    let message = currentQueue.remove(payload.taskId);
     caps.emit('received', message);
   });
 
   socket.on('getAll', (payload) => {
-    let id = payload.queueId ? payload.queueId : payload.store;
+    let id = payload.queueId ? payload.queueId : payload.creator;
     let currentQueue = eventQueue.read(id);
     if (currentQueue && currentQueue.data) {
-      Object.keys(currentQueue.data).forEach((orderId) => {
-        socket.emit('pickup', currentQueue.read(orderId));
+      Object.keys(currentQueue.data).forEach((taskId) => {
+        socket.emit('pickup', currentQueue.read(taskId));
       });
     }
   });
