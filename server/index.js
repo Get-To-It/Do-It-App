@@ -9,10 +9,10 @@ const eventQueue = new Queue();
 // const chance = new Chance();
 
 const server = new Server();
-const caps = server.of('/caps');
+const burden = server.of('/burden');
 
-caps.on('connection', socket => {
-  console.log('connected to caps', socket.id);
+burden.on('connection', socket => {
+  console.log('connected to burden', socket.id);
   // socket.onAny to check and see all events
   socket.onAny((event, payload) => {
     const time = new Date().toISOString();
@@ -38,12 +38,12 @@ caps.on('connection', socket => {
 
     currentQueue.store(payload.taskId, payload);
     //console.log('pickup event', payload);
-    caps.emit('task-ready', payload);
+    burden.emit('task-ready', payload);
   });
 
   socket.on('in-progress', (payload) => {
     //console.log('in-transit event', payload);
-    caps.emit('in-progress', payload);
+    burden.emit('in-progress', payload);
   });
 
   socket.on('completed', (payload) => {
@@ -55,7 +55,7 @@ caps.on('connection', socket => {
 
     currentQueue.store(payload.taskId, payload);
     //console.log('delivered event', payload);
-    caps.emit('completed', payload);
+    burden.emit('completed', payload);
   });
 
   socket.on('accepted', (payload) => {
@@ -67,7 +67,7 @@ caps.on('connection', socket => {
     }
 
     let message = currentQueue.remove(payload.taskId);
-    caps.emit('received', message);
+    burden.emit('received', message);
   });
 
   socket.on('getAll', (payload) => {

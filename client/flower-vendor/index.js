@@ -1,7 +1,7 @@
 'use strict';
 
 const {io} = require('socket.io-client');
-const socket = io.connect('http://localhost:3003/caps');
+const socket = io.connect('http://localhost:3003/burden');
 const { orderDeliver } = require('./handler');
 
 socket.emit('getAll', { store: '1-800-flowers' });

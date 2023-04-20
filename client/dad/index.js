@@ -4,7 +4,7 @@
 const handler = require('./dadHandler');
 const {io} = require('socket.io-client');
 const { taskGenerate, taskComplete } = require('./dadHandler.js');
-const socket = io.connect ('http://localhost:3003/caps');
+const socket = io.connect ('http://localhost:3003/burden');
 
 socket.emit('getAll', { store: '1-800-flowers' });
 

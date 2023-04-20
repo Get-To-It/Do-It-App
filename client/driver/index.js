@@ -3,7 +3,7 @@
 //const eventPool = require('../eventPool');
 const {io} = require('socket.io-client');
 const handler = require('./handler');
-const socket = io.connect('http://localhost:3003/caps');
+const socket = io.connect('http://localhost:3003/burden');
 
 socket.emit('getAll', {queueId: 'SON'});
 
