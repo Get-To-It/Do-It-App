@@ -8,6 +8,6 @@ setInterval(() => {
   taskGenerate(socket);
 }, 10000);
 
-socket.on('completed', payload => {
+socket.on('completed', (payload) => {
   taskComplete(socket, payload);
 });
