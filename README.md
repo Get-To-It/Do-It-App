@@ -46,7 +46,7 @@ TODO: Add instructions on how to run tests for the project, if applicable.
 
 #### Contributors
 
-- Ryan Bagan
+- Ryan "Bruce Wayne's Dragon" Bagan
 - Nathan Brown
 - Kyle Freemantle
 
