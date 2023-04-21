@@ -6,7 +6,7 @@ const socket = io.connect('http://localhost:3003/burden');
 
 setInterval(() => {
 socket.emit('get-all', { queueId: 'KIDS' });
-}, 5000);
+}, 12345);
 
 socket.on('task-ready', (payload) => {
   if (payload.creator === 'Mom') {
