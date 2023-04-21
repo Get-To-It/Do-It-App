@@ -41,6 +41,19 @@ burden.on('connection', socket => {
     burden.emit('task-ready', payload);
   });
 
+  socket.on('task-ready', (payload) => {
+
+    let currentQueue = eventQueue.read('DAUGHTER');
+    if (!currentQueue) {
+      let keyOfQueue = eventQueue.store('DAUGHTER', new Queue());
+      currentQueue = eventQueue.read(keyOfQueue);
+    }
+
+    currentQueue.store(payload.taskId, payload);
+    //console.log('pickup event', payload);
+    burden.emit('task-ready', payload);
+  });
+
   socket.on('in-progress', (payload) => {
     //console.log('in-transit event', payload);
     burden.emit('in-progress', payload);
