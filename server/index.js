@@ -5,8 +5,6 @@ const { Server } = require('socket.io');
 const PORT = process.env.PORT || 3003;
 const Queue = require('./lib/queue');
 const eventQueue = new Queue();
-// const Chance = require('chance');
-// const chance = new Chance();
 
 const server = new Server();
 const burden = server.of('/burden');
@@ -23,22 +21,21 @@ burden.on('connection', socket => {
     });
   });
 
-  socket.on('join', room => {
-    console.log('joined room', room);
+  socket.on('join-room', room => {
     socket.join(room);
   });
 
-  socket.on('task-ready', (payload) => {
+  socket.on('leave-room', room => {
+    socket.leave(room);
+  });
 
-    let currentQueue = eventQueue.read('SON');
+  socket.on('task-ready', (payload) => {
+    let currentQueue = eventQueue.read('KIDS');
     if (!currentQueue) {
-      let keyOfQueue = eventQueue.store('SON', new Queue());
+      let keyOfQueue = eventQueue.store('KIDS', new Queue());
       currentQueue = eventQueue.read(keyOfQueue);
     }
-
     currentQueue.store(payload.taskId, payload);
-    //console.log('pickup event', payload);
-    burden.emit('task-ready', payload);
   });
 
   socket.on('task-ready', (payload) => {
@@ -55,52 +52,35 @@ burden.on('connection', socket => {
   });
 
   socket.on('in-progress', (payload) => {
-    //console.log('in-transit event', payload);
-    burden.emit('in-progress', payload);
+    socket.to(payload.taskId).emit('in-progress', payload);
   });
 
   socket.on('completed', (payload) => {
-    let currentQueue = eventQueue.read(payload.creator);
-    if (!currentQueue) {
-      let keyOfQueue = eventQueue.store(payload.creator, new Queue());
-      currentQueue = eventQueue.read(keyOfQueue);
-    }
-
-    currentQueue.store(payload.taskId, payload);
-    //console.log('delivered event', payload);
-    burden.emit('completed', payload);
+    socket.to(payload.taskId).emit('completed', payload);
   });
 
   socket.on('accepted', (payload) => {
-    console.log('accepted');
-    let id = payload.queueId ? payload.queueId : payload.creator;
-    let currentQueue = eventQueue.read(id);
+    // console.log('accepted');
+    let id = payload.taskId;
+    let currentQueue = eventQueue.read('KIDS');
     if (!currentQueue) {
-      throw new Error('Cannot find queue for store: ' + payload.creator);
+      throw new Error('Cannot find queue for KIDS');
     }
-
     let message = currentQueue.remove(payload.taskId);
     burden.emit('received', message);
   });
 
-  socket.on('getAll', (payload) => {
-    let id = payload.queueId ? payload.queueId : payload.creator;
+  socket.on('get-all', (payload) => {
+    let id = payload.queueId ? payload.queueId : 'KIDS';
     let currentQueue = eventQueue.read(id);
+    // console.log(currentQueue.data);
     if (currentQueue && currentQueue.data) {
       Object.keys(currentQueue.data).forEach((taskId) => {
-        socket.emit('pickup', currentQueue.read(taskId));
+        socket.emit('task-ready', currentQueue.read(taskId));
       });
     }
   });
 
-  // setInterval(() => {
-  //   socket.broadcast.emit('VENDOR', chance.company());
-  // }, 5000);
-  // });
-
-  // emit the VENDOR event when server receives a connection
-  // server.on('connection', socket => {
-  //   console.log('####connected to server', socket.id);
 });
 
 server.listen(PORT);

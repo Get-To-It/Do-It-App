@@ -1,29 +1,31 @@
 'use strict';
 
+const socket = require('../../socket');
 const eventPool = require('../../eventPool');
-const sonHandler = require('./sonHandler');
+const sisHandler = require('./sisHandler');
+
 jest.mock('../../eventPool', () => {
   return {
     emit: jest.fn(),
   };
 });
 
+jest.useFakeTimers();
+
 console.log = jest.fn();
 
-describe('pick-up event', () => {
+describe('test sis', () => {
+
   test('event should emit', () => {
     const payload = {
-      event: 'pickup',
-      time: new Date(),
-      payload: {
-        creator: 'Dad',
+        creator: 'Mom',
         taskId: '147258369',
-        task: 'Vacuum',
-        room: 'Living Room',
-      },
-    };
-
-    sonHandler(payload);
+        task: 'walk',
+        target: 'dog',
+      };
+    sisHandler(socket, payload);
+    jest.advanceTimersByTime(1000);
     expect(eventPool.emit).toString('in-progress', payload);
   });
+
 });

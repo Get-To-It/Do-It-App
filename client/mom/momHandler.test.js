@@ -2,7 +2,7 @@
 
 const socket = require('../../socket');
 const eventPool = require('../../eventPool');
-const { taskGenerate, taskComplete } = require('./dadHandler');
+const { taskGenerate, taskComplete } = require('./momHandler');
 
 jest.mock('../../socket.js', () => {
   return {
@@ -11,16 +11,18 @@ jest.mock('../../socket.js', () => {
   };
 });
 
+jest.useFakeTimers();
+
 console.log = jest.fn();
 
-describe('test dad', () => {
+describe('test mom', () => {
 
-  test('dad should leave room and report accepted after task complete', () => {
+  test('mom should leave room and report accepted after task complete', () => {
     const payload = {
-      creator: 'Dad',
+      creator: 'Mom',
       taskId: '147258369',
-      task: 'vacuum',
-      target: 'living-room',
+      task: 'walk',
+      target: 'dog',
     };
     taskComplete(socket, payload);
     expect(eventPool.emit).toString('leave-room', payload.taskId);

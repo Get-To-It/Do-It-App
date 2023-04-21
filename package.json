@@ -4,10 +4,10 @@
   "description": "A simple TODO list built on socket.io.",
   "main": "./server/index.js",
   "scripts": {
-    "test": "jest --verbose --coverage"
+    "test": "NODE_ENV=test jest --verbose --coverage --forceExit"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nate Brown, Ryan Bagan, Kyle Freemantle",
   "license": "ISC",
   "dependencies": {
     "chance": "^1.1.11",
