@@ -6,7 +6,7 @@ const socket = io.connect('http://localhost:3003/burden');
 
 setInterval(() => {
   taskGenerate(socket);
-}, 10000);
+}, 15000);
 
 socket.on('completed', (payload) => {
   taskComplete(socket, payload);
