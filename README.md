@@ -39,7 +39,7 @@ npm install
 
 ### Usage
 
-Open your browser and navigate to http://localhost:3000.
+Open your browser and navigate to http://localhost:30003/burden
 Select a room (physical area of the house) from the dropdown menu.
 Enter a new task and click the "Add" button to assign it to the selected room.
 The task list will be updated in real-time for all clients connected to the same room.
