@@ -28,10 +28,7 @@ const taskGenerate = (socket, payload = null) => {
 
 const taskComplete = payload => {
   console.log(`DAD: Thank you for completing ${payload.task} the ${payload.room}!`);
-
-  process.exit();
 };
-
 
 module.exports = {
   taskGenerate,

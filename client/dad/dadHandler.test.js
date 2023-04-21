@@ -4,7 +4,7 @@
 const socket = require('../../socket');
 const handler = require('./dadHandler');
 //const orderDeliver = require('./handler');
-const { taskGenerate, taskComplete } = require('../dadHandler.js');
+const { taskGenerate, taskComplete } = require('./dadHandler');
 
 jest.mock('../../socket.js', () => {
   return {
@@ -25,7 +25,7 @@ describe('Dad Handler', () => {
     };
 
     // refactor this to what?
-    orderDeliver(payload);
+    taskComplete(payload);
     expect(socket.emit).toString('in-progress', payload);
   });
 });
