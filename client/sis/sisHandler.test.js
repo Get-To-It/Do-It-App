@@ -1,7 +1,7 @@
 'use strict';
 
-const eventPool = require('../../eventPool');
-const sonHandler = require('./sonHandler');
+const eventPool = require('../../eventPool.js');
+const sisHandler = require('./sisHandler.js');
 jest.mock('../../eventPool', () => {
   return {
     emit: jest.fn(),
@@ -19,11 +19,11 @@ describe('pick-up event', () => {
         creator: 'Dad',
         taskId: '147258369',
         task: 'Vacuum',
-        room: 'Living Room',
+        target: 'Living Room',
       },
     };
 
-    sonHandler(payload);
+    sisHandler(payload);
     expect(eventPool.emit).toString('in-progress', payload);
   });
 });

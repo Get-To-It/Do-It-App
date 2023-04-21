@@ -1,9 +1,7 @@
 'use strict';
 
-// const eventPool = require('../eventPool');
 const socket = require('../../socket');
 const handler = require('./dadHandler');
-//const orderDeliver = require('./handler');
 const { taskGenerate, taskComplete } = require('../dadHandler.js');
 
 jest.mock('../../socket.js', () => {
@@ -21,7 +19,7 @@ describe('Dad Handler', () => {
       creator: 'Dad',
       taskId: '147258369',
       task: 'Vacuum',
-      room: 'Living room',
+      target: 'Living room',
     };
 
     // refactor this to what?
